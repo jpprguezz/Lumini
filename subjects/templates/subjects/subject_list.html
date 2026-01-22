@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<div class="mb-4 d-flex justify-content-between align-items-center">
+    <h1>{% trans "My subjects" %}</h1>
+
+    {% if request.user.profile.role == 'S' %}
+    <div class="d-flex align-items-center">
+        {% if can_request_certificate %}
+        <a href="{% url 'subjects:request_certificate' %}" class="btn btn-success me-2">
+            {% trans "Request certificate" %}
+        </a>
+        {% endif %}
+        <a href="{% url 'subjects:enroll_subjects' %}" class="btn btn-primary me-2">
+            {% trans "Enroll in subjects" %}
+        </a>
+        <a href="{% url 'subjects:unenroll_subjects' %}" class="btn btn-outline-danger">
+            {% trans "Unenroll" %}
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% if subjects %}
+    <ul>
+        {% for subject in subjects %}
+            <li>
+                {{ subject.code }} - 
+                <a href="{% url 'subjects:subject_detail' subject.code %}" class="btn btn-light btn-sm">
+                {{ subject.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>{% trans "You don't have any subjects yet." %}</p>
+{% endif %}
+
+{% endblock %}

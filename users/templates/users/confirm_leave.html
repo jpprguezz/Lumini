@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Abandonar Plataforma{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Confirmar Abandono</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>
+                    </div>
+                    
+                    <h5 class="text-center">¿Estás seguro de que quieres abandonar la plataforma?</h5>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <strong>Advertencia:</strong> Esta acción es irreversible.
+                        Tu cuenta será desactivada y no podrás acceder nuevamente.
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                Sí, abandonar la plataforma
+                            </button>
+                            <a href="{% url 'home' %}" class="btn btn-secondary">
+                                No, cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

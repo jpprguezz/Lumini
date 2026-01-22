@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Lesson</li>
+        </ol>
+    </nav>
+    
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">{{ lesson.title }}</h3>
+            
+            {% if request.user.profile.role == 'T' and subject.teacher == request.user %}
+            <div>
+                <p> Teacher: {{ subject.teacher.get_full_name }}</p>
+                <a href="{% url 'subjects:edit_lesson' subject.code lesson.pk %}" 
+                   class="btn btn-light btn-sm me-1">
+                    <i class="bi bi-pencil me-1"></i>{% trans "Edit" %}
+                </a>
+                <a href="{% url 'subjects:delete_lesson' subject.code lesson.pk %}" 
+                   class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash me-1"></i>{% trans "Delete" %}
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="card-body">
+            <div class="lesson-content p-3 bg-light rounded">
+                {{ lesson.content|linebreaks }}
+            </div>
+        </div>
+        
+        <div class="card-footer text-end">
+            <a href="{% url 'subjects:subject_detail' subject.code %}" class="btn btn-secondary">
+               {% trans "Volver a las lecciones" %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

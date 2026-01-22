@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+
+<div class="text-center mt-5">
+    <h1 class="display-4">Join Lumino. The cool education platform!</h1>
+    <p class="lead">La mejor plataforma de educación online</p>
+    <div class="mt-4">
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg mr-3">
+            Login
+        </a>
+        <a href="{% url 'logout' %}" class="btn btn-primary btn-lg">
+            Logout
+        </a>
+        <a href="{% url 'signup' %}" class="btn btn-secondary btn-lg">
+            Registrarse
+        </a>
+        {% if request.user.profile == request.user.profile %}    
+        <a href="{% url 'subjects:subject_list' %}" class="btn btn-success btn-lg">{% translate "Mis módulos|My subjects" %}</a>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}

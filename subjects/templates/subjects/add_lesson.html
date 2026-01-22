@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3>{% trans "Add lesson" %} - {{ subject.code }} {{ subject.name }}</h3>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} mt-3" role="alert">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% if request.user.profile.role == 'T' and subject.teacher == request.user %}
+  <div class="card mt-3">
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="id_title" class="form-label">{% trans "Title" %}</label>
+          <input type="text" id="id_title" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="id_content" class="form-label">{% trans "Content" %}</label>
+          <textarea id="id_content" name="content" class="form-control" rows="8" required></textarea>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <a href="{% url 'subjects:subject_detail' subject.code %}" class="btn btn-secondary">
+            {% trans "Cancel" %}
+          </a>
+          <button type="submit" class="btn btn-primary">{% trans "Add lesson" %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% else %}
+    <div class="alert alert-danger mt-3" role="alert">
+      {% trans "You are not allowed to add lessons to this subject." %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

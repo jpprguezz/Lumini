@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="card-title mb-0">
+                <i class="bi bi-pencil-square me-2"></i>Edit Grades - {{ subject.code }}
+            </h3>
+            <small class="text-muted">Enter grades from 1 to 10, leave empty for no grade</small>
+        </div>
+        
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                
+                {% if enrollments %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Student</th>
+                                <th>Current Grade</th>
+                                <th>New Grade (1-10)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for enrollment in enrollments %}
+                            <tr>
+                                <td>
+                                    <strong>{{ enrollment.student.get_full_name }}</strong><br>
+                                    <small class="text-muted">{{ enrollment.student.username }}</small>
+                                </td>
+                                <td>
+                                    {% if enrollment.mark %}
+                                    <span class="badge bg-primary fs-6">{{ enrollment.mark }}</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Not graded</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <input type="number" 
+                                           name="mark_{{ enrollment.student.id }}" 
+                                           value="{{ enrollment.mark|default_if_none:'' }}"
+                                           min="1" 
+                                           max="10"
+                                           class="form-control form-control-sm"
+                                           style="width: 100px;">
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Changes are saved immediately when you submit the form.
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'subjects:mark_list' subject.code %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Grades
+                    </a>
+                    
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle me-1"></i>Save All Grades
+                    </button>
+                </div>
+                
+                {% else %}
+                <div class="alert alert-warning text-center py-4">
+                    <i class="bi bi-people display-4 mb-3"></i>
+                    <h5>No students enrolled</h5>
+                    <p class="mb-0">There are no students to grade in this subject.</p>
+                </div>
+                
+                <div class="text-center">
+                    <a href="{% url 'subjects:subject_detail' subject.code %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Subject
+                    </a>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

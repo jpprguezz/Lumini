@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container mt-4">
+  <h3>{% translate "Edit lesson" %} - {{ subject.code }} {{ lesson.title }} {{ lesson.content }}</h3>
+
+  <h1>{{ subject.name }}</h1>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_title" class="form-label">{% translate "Title" %}</label>
+        <input type="text" id="id_title" name="title" class="form-control" required>
+        {{ form.non_field_errors }}
+      </div>
+        
+    <div class="mb-3">
+      {{ form.title.label_tag }}
+      {{ form.title }}
+      {{ form.title.errors }}
+    </div>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_content" class="form-label">{% translate "Content" %}</label>
+        <input type="text" id="id_content" name="content" class="form-control" required>
+        {{ form.non_field_errors }}
+      </div>
+
+    <div class="mb-3">
+      {{ form.content.label_tag }}
+      {{ form.content }}
+      {{ form.content.errors }}
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'subjects:subject_detail' subject.code %}" class="btn btn-secondary">{% trans "Cancel" | "Cancelar" %}</a>
+      <button type="submit" class="btn btn-primary">{% translate "Save changes" %}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

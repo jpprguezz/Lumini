@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Enroll in Subjects</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}                
+                {% if available %}
+                <p>Check the subjects you want to enroll in:</p>
+                
+                <div class="mb-3">
+                    {% for subject in available %}
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" name="subjects" value="{{ subject.id }}">
+                        <label class="form-check-label">
+                            <strong>{{ subject.code }}</strong> - {{ subject.name }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Enroll</button>
+                    <a href="{% url 'subject_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+                
+                {% else %}
+                <div class="alert alert-warning">
+                    No subjects available to enroll in.
+                </div>
+                <a href="{% url 'subject_list' %}" class="btn btn-primary">Back to Subjects</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

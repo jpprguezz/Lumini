@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="card-title mb-0">
+                        <i class="bi bi-journal-x me-2"></i>Unenroll from Subjects
+                    </h3>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <p class="text-muted mb-4">
+                            Select the subjects you want to unenroll from:
+                        </p>
+                        
+                        {% if my_subjects %}
+                        <div class="mb-4">
+                            {% for subject in my_subjects %}
+                            <div class="form-check mb-3 p-3 border rounded">
+                                <input class="form-check-input" 
+                                       type="checkbox" 
+                                       name="subjects" 
+                                       value="{{ subject.id }}"
+                                       id="subject_{{ subject.id }}">
+                                <label class="form-check-label ms-2" for="subject_{{ subject.id }}">
+                                    <strong class="text-primary">{{ subject.code }}</strong> - {{ subject.name }}
+                                    <br>
+                                    <small class="text-muted">
+                                        Teacher: {{ subject.teacher.get_full_name }}
+                                    </small>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Warning:</strong> This action will remove you from the selected subjects 
+                            and delete your grades for those subjects.
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'subject_list' %}" class="btn btn-outline-secondary me-md-2">
+                                ↩ Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                🗑️ Unenroll from Selected Subjects
+                            </button>
+                        </div>
+                        
+                        {% else %}
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            <strong>You are not enrolled in any subjects.</strong>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="{% url 'subject_list' %}" class="btn btn-primary">
+                                ↩ Return to Subjects
+                            </a>
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
