@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% include "include/header.html" %} 
+{% block content %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Login">
+</form>
+
+<a href="{% url 'signup' %}">
+  Don't have an account? Sign up here.
+</a>
+{% endblock %}
+
+
